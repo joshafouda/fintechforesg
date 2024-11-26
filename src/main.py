@@ -1,0 +1,45 @@
+import os
+import pandas as pd
+from src.data_simulation import simulate_data
+from src.data_processing import load_and_merge_data
+from src.data_filtering import filter_data
+#from src.bonus_malus_calculation import calculate_bonus_malus
+
+def main():
+    # Définir les chemins des fichiers
+    base_path = os.getcwd()
+    raw_data_path = os.path.join(base_path, "data", "raw")
+    processed_data_path = os.path.join(base_path, "data", "processed")
+    
+    user_data_path = os.path.join(raw_data_path, "simulated_USER_DATA_with_dates.csv")
+    kyc_data_path = os.path.join(raw_data_path, "simulated_KYC_DATA.csv")
+    merged_data_path = os.path.join(processed_data_path, "merged_data.csv")
+    filtered_data_path = os.path.join(processed_data_path, "filtered_data.csv")
+    
+    # Étape 1 : Simulation des données
+    print("Étape 1 : Simulation des données...")
+    simulate_data(raw_data_path)
+    print(f"Données simulées sauvegardées dans {raw_data_path}")
+    
+    # Étape 2 : Fusion des données
+    print("Étape 2 : Fusion des données...")
+    merged_data = load_and_merge_data(user_data_path, kyc_data_path)
+    merged_data.to_csv(merged_data_path, index=False)
+    print(f"Fichier fusionné sauvegardé dans {merged_data_path}")
+    
+    # Étape 3 : 
+    print("Étape 3 : Veuillez exécuter le Notebook EDA dans notebooks/EDA_merged_data.ipynb.")
+
+    # Étape 4 : Pré-filtration des données clients
+    print("Étape 4 : Pré-filtration des données clients...")
+    filtered_data = filter_data(merged_data)
+    filtered_data.to_csv(filtered_data_path, index=False)
+    print(f"Fichier filtré sauvegardé dans {filtered_data_path}")
+
+    # Étape 5 : Rappel pour l'EDA sur filtered_data
+    print("Étape 5 : Veuillez exécuter le Notebook EDA dans notebooks/EDA_filtered_data.ipynb.")
+
+    print("Pipeline exécuté avec succès !")
+
+if __name__ == "__main__":
+    main()
