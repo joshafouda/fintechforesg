@@ -71,8 +71,8 @@ def calculate_mobile_money_scores(filtered_data):
     # Apply the scoring function to the dataframe
     filtered_data['Mobile_Money_Score'] = filtered_data.apply(calculate_mobile_money_score, axis=1)
     
-    # Return the result as a new dataframe with only SIM_NUMBER and Mobile_Money_Score
-    return filtered_data[['SIM_NUMBER', 'Mobile_Money_Score']]
+    # Return the result as a new dataframe 
+    return filtered_data
 
 
 ########### Fonction de Scoring du service Data ##########
@@ -148,8 +148,8 @@ def calculate_data_service_scores(filtered_data):
     # Apply the scoring function to the dataframe
     filtered_data['Data_Service_Score'] = filtered_data.apply(calculate_data_service_score, axis=1)
 
-    # Return the result as a new dataframe with only SIM_NUMBER and Data_Service_Score
-    return filtered_data[['SIM_NUMBER', 'Data_Service_Score']]
+    # Return the result as a new dataframe 
+    return filtered_data
 
 
 ########### Fonction de scoring du service Voice ##########
@@ -224,8 +224,8 @@ def calculate_voice_service_scores(filtered_data):
     # Apply the scoring function to the dataframe
     filtered_data['Voice_Service_Score'] = filtered_data.apply(calculate_voice_service_score, axis=1)
 
-    # Return the result as a new dataframe with only SIM_NUMBER and Voice_Service_Score
-    return filtered_data[['SIM_NUMBER', 'Voice_Service_Score']]
+    # Return the result as a new dataframe 
+    return filtered_data
 
 
 
@@ -298,8 +298,8 @@ def calculate_sms_service_scores(filtered_data):
     # Apply the scoring function to the dataframe
     filtered_data['SMS_Service_Score'] = filtered_data.apply(calculate_sms_service_score, axis=1)
 
-    # Return the result as a new dataframe with only SIM_NUMBER and SMS_Service_Score
-    return filtered_data[['SIM_NUMBER', 'SMS_Service_Score']]
+    # Return the result as a new dataframe
+    return filtered_data
 
 
 ########## Fonction de scoring du service Digital ##########
@@ -344,5 +344,28 @@ def calculate_digital_service_scores(filtered_data):
         calculate_digital_service_score, axis=1
     )
 
-    # Return the result as a new dataframe with only SIM_NUMBER and Digital_Service_Score
-    return filtered_data[['SIM_NUMBER', 'Digital_Service_Score']]
+    # Return the result as a new dataframe 
+    return filtered_data
+
+
+def generate_profile_code(filtered_data):
+    """
+    Génère le profil final 'Profile_Code' en concaténant les scores de chaque service.
+
+    Args:
+        filtered_data (pd.DataFrame): DataFrame contenant les scores des différents services.
+
+    Returns:
+        pd.DataFrame: DataFrame enrichie avec la colonne 'Profile_Code'.
+    """
+    # Remplacer les valeurs manquantes par une chaîne vide avant la concaténation
+    filtered_data['Profile_Code'] = (
+        filtered_data['Mobile_Money_Score'].astype(int).astype(str) +
+        filtered_data['Data_Service_Score'].astype(int).astype(str) +
+        filtered_data['Voice_Service_Score'].astype(int).astype(str) +
+        filtered_data['SMS_Service_Score'].astype(int).astype(str) +
+        filtered_data['Digital_Service_Score'].astype(int).astype(str)
+    )
+    return filtered_data
+
+
