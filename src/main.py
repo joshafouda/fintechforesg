@@ -5,6 +5,7 @@ from src.data_processing import load_and_merge_data
 from src.data_filtering import filter_data
 from src.scoring_and_profiling import calculate_all_scores, generate_profile_code
 from src.segmentation import segment_profiles
+from src.cash_allocation import calculate_individual_credits, calculate_business_credits
 
 def main():
     # Définir les chemins des fichiers
@@ -18,6 +19,7 @@ def main():
     filtered_data_path = os.path.join(processed_data_path, "filtered_data.csv")
     scored_data_path = os.path.join(processed_data_path, "scored_data.csv")
     segmented_data_path = os.path.join(processed_data_path, "segmented_data.csv")
+    cash_allocated_data_path = os.path.join(processed_data_path, "cash_allocated_data.csv")
     
     # Étape 1 : Simulation des données
     print("Étape 1 : Simulation des données...")
@@ -73,6 +75,31 @@ def main():
     # Étape 9 : Analyse des segments
     print("Étape 9 : Veuillez exécuter le Notebook EDA dans notebooks/EDA_segments.ipynb.")
 
+    # Étape 10 : Attribution des crédits
+    print("Étape 10 : Attribution des crédits...")
+    try:
+        segmented_data = pd.read_csv(segmented_data_path)
+
+        # Appliquer les fonctions d'attribution
+        segmented_data[['Nano_Loan', 'Advanced_Credit']] = segmented_data.apply(
+            calculate_individual_credits, axis=1, result_type='expand'
+        )
+        segmented_data[['Macro_Loan', 'Cash_Roller_Over']] = segmented_data.apply(
+            calculate_business_credits, axis=1, result_type='expand'
+        )
+
+        # Sauvegarder les résultats
+        segmented_data.to_csv(cash_allocated_data_path, index=False)
+        print(f"Données avec crédits sauvegardées dans {cash_allocated_data_path}")
+    except Exception as e:
+        print(f"Erreur lors de l'étape 10 : {e}")
+        print("Veuillez vérifier cash_allocation.py pour diagnostiquer le problème.")
+
+    # Étape 11 : Analyse des crédits alloués
+    print("Étape 11 : Veuillez exécuter le Notebook EDA dans notebooks/EDA_cash_allocated.ipynb.")
+
+    
+    
     print("Pipeline exécuté avec succès !")
 
 if __name__ == "__main__":
