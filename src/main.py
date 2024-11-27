@@ -4,6 +4,7 @@ from src.data_simulation import simulate_data
 from src.data_processing import load_and_merge_data
 from src.data_filtering import filter_data
 from src.scoring_and_profiling import calculate_all_scores, generate_profile_code
+from src.segmentation import segment_profiles
 
 def main():
     # Définir les chemins des fichiers
@@ -16,6 +17,7 @@ def main():
     merged_data_path = os.path.join(processed_data_path, "merged_data.csv")
     filtered_data_path = os.path.join(processed_data_path, "filtered_data.csv")
     scored_data_path = os.path.join(processed_data_path, "scored_data.csv")
+    segmented_data_path = os.path.join(processed_data_path, "segmented_data.csv")
     
     # Étape 1 : Simulation des données
     print("Étape 1 : Simulation des données...")
@@ -54,6 +56,22 @@ def main():
         print(f"Erreur lors de l'étape 6 : {e}")
         print("Veuillez vérifier scoring_and_profiling.py pour diagnostiquer le problème.")
 
+    # Étape 7 : Analyse exploratoire des résultats de scoring et de profiling
+    print("Étape 7 : Veuillez exécuter le Notebook EDA dans notebooks/EDA_scored_data.ipynb.")
+
+    # Étape 8 : Segmentation des profils
+    print("Étape 8 : Segmentation des profils...")
+    try:
+        scored_data = pd.read_csv(scored_data_path)
+        segmented_data = segment_profiles(scored_data)
+        segmented_data.to_csv(segmented_data_path, index=False)
+        print(f"Données segmentées sauvegardées dans {segmented_data_path}")
+    except Exception as e:
+        print(f"Erreur lors de l'étape 8 : {e}")
+        print("Veuillez vérifier segmentation.py pour diagnostiquer le problème.")
+
+    # Étape 9 : Analyse des segments
+    print("Étape 9 : Veuillez exécuter le Notebook EDA dans notebooks/EDA_segments.ipynb.")
 
     print("Pipeline exécuté avec succès !")
 
