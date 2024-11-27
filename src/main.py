@@ -6,6 +6,7 @@ from src.data_filtering import filter_data
 from src.scoring_and_profiling import calculate_all_scores, generate_profile_code
 from src.segmentation import segment_profiles
 from src.cash_allocation import calculate_individual_credits, calculate_business_credits
+from src.multi_sim_management import manage_multi_sim_clients, validate_final_clients
 
 def main():
     # Définir les chemins des fichiers
@@ -20,6 +21,7 @@ def main():
     scored_data_path = os.path.join(processed_data_path, "scored_data.csv")
     segmented_data_path = os.path.join(processed_data_path, "segmented_data.csv")
     cash_allocated_data_path = os.path.join(processed_data_path, "cash_allocated_data.csv")
+    final_clients_path = os.path.join(processed_data_path, "final_clients.csv")
     
     # Étape 1 : Simulation des données
     print("Étape 1 : Simulation des données...")
@@ -98,7 +100,19 @@ def main():
     # Étape 11 : Analyse des crédits alloués
     print("Étape 11 : Veuillez exécuter le Notebook EDA dans notebooks/EDA_cash_allocated.ipynb.")
 
-    
+
+    # Étape 12 : Gestion des clients avec plusieurs SIM
+    print("Étape 12 : Gestion des clients avec plusieurs SIM...")
+    try:
+        cash_allocated_data = pd.read_csv(cash_allocated_data_path)
+        final_clients = manage_multi_sim_clients(cash_allocated_data)
+        validate_final_clients(final_clients)
+        final_clients.to_csv(final_clients_path, index=False)
+        print(f"Données finales sauvegardées dans {final_clients_path}")
+    except Exception as e:
+        print(f"Erreur lors de l'étape 12 : {e}")
+        print("Veuillez vérifier multi_sim_management.py pour diagnostiquer le problème.")
+
     
     print("Pipeline exécuté avec succès !")
 

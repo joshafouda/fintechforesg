@@ -28,7 +28,7 @@ def load_and_merge_data(user_data_path, kyc_data_path):
     # Merge the datasets
     merged_data = pd.merge(
         user_data_df,
-        kyc_data_df[['SIM_NUMBER', 'REGISTRATION_STATUS', 'age', 'REGION', 'tenure_years', 'CUST_CATEGORY']],
+        kyc_data_df,
         left_on='SIM_NUMBER',
         right_on='SIM_NUMBER',
         how='inner'
