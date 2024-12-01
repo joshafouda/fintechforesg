@@ -50,6 +50,7 @@ Ce projet vise à développer un système d'analyse, de pré-filtration et de sc
 ## **Installation**
 
 ### **1. Cloner le Projet**
+
 ```bash
 git clone https://github.com/your-repo/fintechforesg.git
 cd fintechforesg
@@ -57,6 +58,7 @@ cd fintechforesg
 
 ### **2. Installer les Dépendances**
 Assurez-vous d’avoir Python 3.7 ou une version ultérieure. Installez les bibliothèques nécessaires :
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -145,7 +147,7 @@ Les tests incluent :
 - Pré-filtration des données.                       
 - Calcul des scores et des profils.                     
 - Segmentation des profils.                         
-```
+
 
 ---
 
@@ -201,7 +203,7 @@ Pour exécuter les Notebooks, utilisez la commande suivante dans votre terminal�
 jupyter notebook
 ```
 Ensuite, naviguez jusqu'au fichier Notebook que vous souhaitez explorer et exécutez les cellules.
-```
+
 
 ---
 
@@ -255,7 +257,7 @@ python -m unittest tests.test_nom_du_fichier
 ---
 
 ## **Auteurs**
-- [Votre Nom ou Équipe](mailto:votre.email@example.com)
+- [Adresse Équipe](mailto:votre.email@example.com)
 
 ---
 
@@ -263,4 +265,3 @@ python -m unittest tests.test_nom_du_fichier
 1. Remplacez `https://github.com/your-repo/fintechforesg.git` par le vrai lien de votre dépôt GitHub.
 2. Ajoutez ou modifiez des sections si de nouvelles étapes sont intégrées.
 
-Si vous souhaitez d'autres ajustements, faites-le-moi savoir ! 😊
