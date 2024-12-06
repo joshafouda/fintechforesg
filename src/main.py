@@ -7,6 +7,7 @@ from src.scoring_and_profiling import calculate_all_scores, generate_profile_cod
 from src.segmentation import segment_profiles
 from src.cash_allocation import calculate_individual_credits, calculate_business_credits
 from src.multi_sim_management import manage_multi_sim_clients, validate_final_clients
+from src.bonus_malus_calculation import process_transactions, update_transactions, calculate_bonus_malus, update_loans_with_bonus_malus
 
 def main():
     # Définir les chemins des fichiers
@@ -22,6 +23,12 @@ def main():
     segmented_data_path = os.path.join(processed_data_path, "segmented_data.csv")
     cash_allocated_data_path = os.path.join(processed_data_path, "cash_allocated_data.csv")
     final_clients_path = os.path.join(processed_data_path, "final_clients.csv")
+
+    transactions_file = os.path.join(raw_data_path, "real_transactions_with_dates.csv")
+    final_clients_file = os.path.join(processed_data_path, "final_clients.csv")
+    transactions_previous_month_file = os.path.join(processed_data_path, "transactions_previous_month.csv")
+    final_clients_with_bonus_malus_file = os.path.join(processed_data_path, "final_clients_with_bonus_malus.csv")
+    final_clients_with_updated_loans_file = os.path.join(processed_data_path, "final_clients_with_updated_loans.csv")
     
     # Étape 1 : Simulation des données
     print("Étape 1 : Simulation des données...")
@@ -114,6 +121,48 @@ def main():
         print("Veuillez vérifier multi_sim_management.py pour diagnostiquer le problème.")
 
     
+    # Étape 13 : Implémentation des bonus/malus
+    try:
+        print("Étape 13 : Implémentation des bonus/malus...")
+
+        # Étape a: Créer le DataFrame des transactions pour le mois précédent
+        print("Traitement des transactions pour le mois précédent...")
+        process_transactions(transactions_file, transactions_previous_month_file)
+
+        # Étape b: Mise à jour des transactions avec les informations des clients finaux
+        print("Mise à jour des transactions avec les données des clients finaux...")
+        update_transactions(
+            transactions_previous_month_file,
+            final_clients_file,
+            transactions_previous_month_file
+        )
+
+        # Étape c: Calcul des bonus/malus
+        print("Calcul des bonus/malus pour les clients...")
+        calculate_bonus_malus(
+            transactions_previous_month_file,
+            final_clients_file,
+            final_clients_with_bonus_malus_file
+        )
+
+        # Étape d: Mise à jour des prêts des clients avec le bonus/malus
+        print("Mise à jour des prêts des clients avec le bonus/malus...")
+        update_loans_with_bonus_malus(
+            final_clients_with_bonus_malus_file,
+            final_clients_with_updated_loans_file
+        )
+
+        print(f"Fichiers mis à jour avec succès dans {processed_data_path}.")
+
+    except Exception as e:
+        print(f"Erreur lors de l'étape 13 : {e}")
+
+    
+    # Étape 14 : Rappel pour l'analyse exploratoire des Bonus/Malus et des Montants de Crédits Mis à Jour
+    print("Étape 14 : Veuillez exécuter le Notebook EDA dans notebooks/EDA_bonus_malus_updated_loans.ipynb.")
+
+
+
     print("Pipeline exécuté avec succès !")
 
 if __name__ == "__main__":
