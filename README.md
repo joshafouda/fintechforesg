@@ -1,8 +1,4 @@
-### **Mise à Jour du `README.md`**
-
----
-
-# FinTech for ESG
+# FINTECH4ESG
 
 ## **Description**
 Ce projet vise à développer un système d'analyse, de pré-filtration et de scoring pour des clients de Mobile Money, en se basant sur leurs données d'utilisation et leur conformité KYC (Know Your Customer).
@@ -12,37 +8,81 @@ Ce projet vise à développer un système d'analyse, de pré-filtration et de sc
 ## **Structure du Projet**
 
 - **`data/`** :
+
   - **`raw/`** : Contient les données brutes simulées, comme `simulated_USER_DATA_with_dates.csv` et `simulated_KYC_DATA.csv`.
+
   - **`processed/`** : Contient les fichiers de données intermédiaires ou résultats après traitement :
+
     - `merged_data.csv` : Données fusionnées.
+
     - `filtered_data.csv` : Données après pré-filtration.
+
     - `scored_data.csv` : Données avec les scores calculés.
+
     - `segmented_data.csv` : Données segmentées selon les scores pondérés.
 
+    - `cash_allocated_data.csv` : Données avec crédits attribués aux clients.
+
+    - `final_clients.csv` : Données finales après gestion des clients multi-SIM.
+
+    - `transactions_previous_month.csv` : Transactions du 15 et dernier jour des mois précédents pour chaque client.
+
+    - `final_clients_with_bonus_malus.csv` : Données finales enrichies avec les bonus/malus calculés.
+
+    - `final_clients_with_updated_loans.csv` : Données finales avec les prêts mis à jour après application des bonus/malus.
+
+
 - **`notebooks/`** :
+
   - Notebooks interactifs pour l'analyse exploratoire des données :
+
     - `EDA_merged_data.ipynb` : Analyse des données fusionnées.
+
     - `EDA_filtered_data.ipynb` : Analyse des données après pré-filtration.
+
     - `EDA_scored_data.ipynb` : Analyse des résultats de scoring et profiling.
+
     - `EDA_segments.ipynb` : Analyse des segments générés à partir des profils.
 
+    - `EDA_cash_allocated.ipynb` : Analyse des crédits attribués aux clients (Nano Loan, Advanced Credit, etc.).
+
+    - `EDA_bonus_malus_updated_loans.ipynb` : Analyse des bonus/malus et des montants de crédits mis à jour, reflétant la capacité de remboursement.
+
+
 - **`src/`** :
+
   - Contient les scripts principaux pour la simulation, le traitement et l'analyse des données :
-    - `data_simulation.py` : Génération des données simulées.
-    - `data_processing.py` : Fusion des données utilisateur et KYC.
-    - `data_filtering.py` : Pré-filtration des données pour obtenir une base propre.
-    - `scoring_and_profiling.py` : Calcul des scores et génération des profils.
-    - `segmentation.py` : Segmentation des profils en groupes (Very High, High, etc.).
-    - `bonus_malus_calculation.py` : (placeholder pour les calculs des bonus/malus).
+
+    - `data_simulation.py` : Génération des données simulées pour les utilisateurs, les KYC et les transactions.
+
+    - `data_processing.py` : Fusion des données utilisateur et KYC pour créer un fichier consolidé.
+
+    - `data_filtering.py` : Pré-filtration des données pour isoler les utilisateurs actifs et pertinents.
+
+    - `scoring_and_profiling.py` : Calcul des scores pour les différents services (Mobile Money, Data, etc.) et génération des profils.
+
+    - `segmentation.py` : Segmentation des profils en groupes (Very High, High, Medium, Low, Very Low) basés sur des scores pondérés.
+
+    - `cash_allocation.py` : Attribution des crédits (Nano Loan, Macro Loan, etc.) aux clients, selon leur profil et catégorie.
+
+    - `multi_sim_management.py` : Gestion des clients possédant plusieurs SIM et consolidation des profils.
+
+    - `bonus_malus_calculation.py` : Implémentation des bonus/malus pour ajuster les prêts en fonction de la capacité de remboursement.
+
+    - `main.py` : Point d'entrée unique pour exécuter l'ensemble du pipeline.
+
 
 - **`tests/`** :
+
   - Tests unitaires pour valider les fonctions principales :
+
     - `test_data_processing.py` : Tests pour la fusion des données.
+
     - `test_data_filtering.py` : Tests pour la pré-filtration des données.
-    - `test_scoring_and_profiling.py` : Tests pour le calcul des scores et profils.
-    - `test_segmentation.py` : Tests pour la segmentation des profils.
+
 
 - **`main.py`** :
+
   - Point d'entrée unique pour exécuter l'ensemble du pipeline, de la simulation des données à la segmentation finale.
 
 ---
@@ -53,10 +93,12 @@ Ce projet vise à développer un système d'analyse, de pré-filtration et de sc
 
 ```bash
 git clone https://github.com/your-repo/fintechforesg.git
+
 cd fintechforesg
 ```
 
 ### **2. Installer les Dépendances**
+
 Assurez-vous d’avoir Python 3.7 ou une version ultérieure. Installez les bibliothèques nécessaires :
 
 ```bash
@@ -72,7 +114,7 @@ pip install -r requirements.txt
 Pour exécuter tout le projet, de la simulation des données aux résultats finaux, utilisez :
 
 ```bash
-python src/main.py
+python3 src/main.py
 ```
 
 ### **2. Exécution Étape par Étape**
@@ -84,7 +126,7 @@ Si vous souhaitez exécuter des étapes spécifiques, voici les commandes associ
 Génère les fichiers simulés dans `data/raw/` :
 
 ```bash
-python src/data_simulation.py
+python3 src/data_simulation.py
 ```
 
 #### **Fusion des Données**
@@ -92,7 +134,7 @@ python src/data_simulation.py
 Fusionne les fichiers utilisateur et KYC, et sauvegarde `merged_data.csv` dans `data/processed/` :
 
 ```bash
-python src/data_processing.py
+python3 src/data_processing.py
 ```
 
 #### **Pré-filtration des Données**
@@ -100,7 +142,7 @@ python src/data_processing.py
 Filtre les données fusionnées pour obtenir une base propre :
 
 ```bash
-python src/data_filtering.py
+python3 src/data_filtering.py
 ```
 
 #### **Calcul des Scores et Génération des Profils**
@@ -108,7 +150,7 @@ python src/data_filtering.py
 Calcule les scores des différents services, génère les profils et sauvegarde `scored_data.csv` dans `data/processed/` :
 
 ```bash
-python src/scoring_and_profiling.py
+python3 src/scoring_and_profiling.py
 ```
 
 #### **Segmentation des Profils**
@@ -116,152 +158,32 @@ python src/scoring_and_profiling.py
 Segmente les profils en cinq groupes (`Very High`, `High`, `Medium`, `Low`, `Very Low`) et sauvegarde `segmented_data.csv` dans `data/processed/` :
 
 ```bash
-python src/segmentation.py
+python3 src/segmentation.py
 ```
 
 ### **3. Analyse Exploratoire avec les Notebooks**
-Pour explorer les différentes étapes des données, ouvrez les notebooks correspondants dans le dossier `notebooks/` :
 
-- **Fusion des Données** : `EDA_merged_data.ipynb`              
-- **Pré-filtration** : `EDA_filtered_data.ipynb`                   
-- **Scoring et Profiling** : `EDA_scored_data.ipynb`                   
-- **Segmentation des Profils** : `EDA_segments.ipynb`                          
+Pour explorer les différentes étapes d'anañyse exploratoire des données, ouvrez les notebooks correspondants dans le dossier `notebooks/` :
 
-Exécutez-les avec :
+- **Fusion des Données** : `EDA_merged_data.ipynb`
 
-```bash
-jupyter notebook
-```
-ou de manière interactive au sein du notebook (exécution de chaque cellule)
+- **Pré-filtration** : `EDA_filtered_data.ipynb`
 
-### **4. Tester les Fonctions**
+- **Scoring et Profiling** : `EDA_scored_data.ipynb`
 
-Pour exécuter les tests unitaires et vérifier la robustesse des fonctions, utilisez :
+- **Segmentation des Profils** : `EDA_segments.ipynb`
 
-```bash
-pytest tests/
-```
-Les tests incluent :
+- etc.
 
-- Fusion des données.                       
-- Pré-filtration des données.                       
-- Calcul des scores et des profils.                     
-- Segmentation des profils.                         
-
-
----
-
-## **Analyse Exploratoire**
-
-Les analyses exploratoires sont réalisées dans les Notebooks suivants :
-
-1. **EDA sur `merged_data`** :
-
-   Analyse des données fusionnées, leur structure, et leurs caractéristiques globales.
-
-   Ouvrez et exécutez le Notebook :
-
-   ```bash
-   notebooks/EDA_merged_data.ipynb
-   ```
-
-2. **EDA sur `filtered_data`** :
-
-   Analyse des données après pré-filtration pour comprendre les distributions et les attributs des clients retenus.
-
-   Ouvrez et exécutez le Notebook :
-
-   ```bash
-   notebooks/EDA_filtered_data.ipynb
-   ```
-
-3. **EDA sur `scored_data`** :
-
-   Exploration des scores calculés pour chaque service (Mobile Money, Data, Voice, SMS, Digital) et des profils générés.
-
-   Ouvrez et exécutez le Notebook :
-
-   ```bash
-   notebooks/EDA_scored_data.ipynb
-   ```
-
-4. **EDA sur les Segments** :
-
-   Analyse des segments (`Very High`, `High`, `Medium`, `Low`, `Very Low`) générés à partir des profils et des scores pondérés.
-
-   Ouvrez et exécutez le Notebook :
-
-   ```bash
-   notebooks/EDA_segments.ipynb
-   ```
-
-### **Instructions pour Exécuter les Notebooks**
-
-Pour exécuter les Notebooks, utilisez la commande suivante dans votre terminal :
-
-```bash
-jupyter notebook
-```
-Ensuite, naviguez jusqu'au fichier Notebook que vous souhaitez explorer et exécutez les cellules.
-
-
----
-
-## **Tests**
-
-Pour exécuter les tests unitaires et valider le bon fonctionnement des fonctions principales :
-
-### **Commandes**
-
-1. **Exécution de tous les tests** :
-
-   Pour lancer l'ensemble des tests dans le répertoire `tests/` :
-
-   ```bash
-   python -m unittest discover tests
-   ```
-
-2. **Exécution avec Pytest** (optionnel, si installé) :
-
-   Vous pouvez également utiliser `pytest` pour exécuter les tests avec des rapports plus détaillés :
-
-   ```bash
-   pytest tests/
-   ```
-
-### **Tests Disponibles**
-
-Les tests couvrent les principales étapes du pipeline :
-
-- **Fusion des données** : Valide la combinaison des fichiers utilisateur et KYC.
-
-- **Pré-filtration** : Vérifie que les critères de sélection des clients sont correctement appliqués.
-
-- **Calcul des scores et profils** : Assure la cohérence des scores pour chaque service et des profils générés.
-
-- **Segmentation des profils** : Valide le calcul des scores pondérés et l'attribution des segments.
-
-Pour exécuter un test spécifique :
-
-```bash
-python -m unittest tests.test_nom_du_fichier
-```
-
----
-
-## **Prochaines Étapes**
-1. Intégration des calculs de bonus/malus.
-2. Ajout de visualisations avancées dans les Notebooks.
-3. Mise en place d’un modèle de scoring pour les clients.
-
----
+Exécutez-les de manière interactive au sein du notebook (exécution de chaque cellule)
 
 ## **Auteurs**
-- [Adresse Équipe](mailto:votre.email@example.com)
+
+- [Josué AFOUDA (Data Scientist)](afouda.josue@gmail.com)
+
+- [Blaise](adresse@example.com)
+
+- [JJ Bwanga](jjb@fintech4esg.com)
 
 ---
-
-### **Instructions**
-1. Remplacez `https://github.com/your-repo/fintechforesg.git` par le vrai lien de votre dépôt GitHub.
-2. Ajoutez ou modifiez des sections si de nouvelles étapes sont intégrées.
 
